@@ -1,28 +1,35 @@
 document.getElementById('downloadForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
+    
     const repoUrl = document.getElementById('repoUrl').value;
     const folderName = document.getElementById('folderName').value;
-
-    document.getElementById('status').textContent = 'Downloading...';
-
-    // Use the full URL to the backend deployed on Vercel
-    fetch('https://github-folder-downloader-backend-3r76xvcm1-prasannamishra.vercel.app', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ repoUrl, folderName }),
+    const statusElement = document.getElementById('status');
+    
+    statusElement.textContent = 'Downloading...';
+    statusElement.style.color = 'blue';
+  
+    fetch('https://github-folder-downloader-backend-9o5c5t5rm-prasannamishra.vercel.app/download', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ repoUrl, folderName }),
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(errorData => {
+          throw new Error(errorData.message || 'Download failed');
+        });
+      }
+      return response.json();
+    })
     .then(data => {
-        if (data.success) {
-            document.getElementById('status').textContent = 'Download Complete!';
-        } else {
-            document.getElementById('status').textContent = 'Error: ' + data.message;
-        }
+      statusElement.textContent = 'Download Complete!';
+      statusElement.style.color = 'green';
     })
     .catch(err => {
-        document.getElementById('status').textContent = 'Error: ' + err.message;
+      statusElement.textContent = 'Error: ' + err.message;
+      statusElement.style.color = 'red';
+      console.error('Download error:', err);
     });
-});
+  });
