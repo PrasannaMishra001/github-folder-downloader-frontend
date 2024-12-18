@@ -1,16 +1,16 @@
 document.getElementById('downloadForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    
+
     const repoUrl = document.getElementById('repoUrl').value;
     const folderName = document.getElementById('folderName').value;
     const statusElement = document.getElementById('status');
-    
+
     statusElement.textContent = 'Retrieving folder contents...';
     statusElement.style.color = 'blue';
-  
-    // Use the exact Vercel deployment URL with /api/download
+
+    // Use the correct Vercel backend URL
     const backendUrl = 'https://github-folder-downloader-backend-go2cq5aow-prasannamishra.vercel.app/api/download';
-  
+
     fetch(backendUrl, {
       method: 'POST',
       headers: {
@@ -20,7 +20,7 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
     })
     .then(response => {
       console.log('Response status:', response.status);
-      
+
       // Check for HTTP errors
       if (!response.ok) {
         return response.json().then(errorData => {
@@ -31,11 +31,11 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
     })
     .then(data => {
       console.log('Detailed response:', data);
-      
+
       if (data.success) {
         statusElement.textContent = `Retrieved ${data.fileCount} files`;
         statusElement.style.color = 'green';
-        
+
         // Optional: Display file list
         console.log('Files:', data.files);
       } else {
@@ -47,4 +47,4 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
       statusElement.textContent = 'Error: ' + err.message;
       statusElement.style.color = 'red';
     });
-  });
+});
