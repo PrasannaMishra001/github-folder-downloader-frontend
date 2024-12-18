@@ -9,7 +9,7 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
     statusElement.style.color = 'blue';
   
     // Use the exact Vercel deployment URL
-    const backendUrl = 'https://github-folder-downloader-backend-9o5c5t5rm-prasannamishra.vercel.app/download';
+    const backendUrl = 'https://github-folder-downloader-backend-8ilb9kp5z-prasannamishra.vercel.app/download';
   
     fetch(backendUrl, {
       method: 'POST',
