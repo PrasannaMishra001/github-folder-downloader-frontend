@@ -8,7 +8,10 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
     statusElement.textContent = 'Downloading...';
     statusElement.style.color = 'blue';
   
-    fetch('https://github-folder-downloader-backend-9o5c5t5rm-prasannamishra.vercel.app/download', {
+    // Use the exact Vercel deployment URL
+    const backendUrl = 'https://github-folder-downloader-backend-9o5c5t5rm-prasannamishra.vercel.app/download';
+  
+    fetch(backendUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -16,6 +19,7 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
       body: JSON.stringify({ repoUrl, folderName }),
     })
     .then(response => {
+      console.log('Response status:', response.status);
       if (!response.ok) {
         return response.json().then(errorData => {
           throw new Error(errorData.message || 'Download failed');
@@ -24,12 +28,13 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
       return response.json();
     })
     .then(data => {
-      statusElement.textContent = 'Download Complete!';
+      console.log('Download response:', data);
+      statusElement.textContent = data.message || 'Download Complete!';
       statusElement.style.color = 'green';
     })
     .catch(err => {
+      console.error('Full error:', err);
       statusElement.textContent = 'Error: ' + err.message;
       statusElement.style.color = 'red';
-      console.error('Download error:', err);
     });
   });
