@@ -5,11 +5,11 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
     const folderName = document.getElementById('folderName').value;
     const statusElement = document.getElementById('status');
     
-    statusElement.textContent = 'Downloading...';
+    statusElement.textContent = 'Retrieving folder contents...';
     statusElement.style.color = 'blue';
   
-    // Use the exact Vercel deployment URL
-    const backendUrl = 'https://github-folder-downloader-backend-8ilb9kp5z-prasannamishra.vercel.app/download';
+    // Use the exact Vercel deployment URL with /api/download
+    const backendUrl = 'https://github-folder-downloader-backend-go2cq5aow-prasannamishra.vercel.app/api/download';
   
     fetch(backendUrl, {
       method: 'POST',
@@ -20,20 +20,30 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
     })
     .then(response => {
       console.log('Response status:', response.status);
+      
+      // Check for HTTP errors
       if (!response.ok) {
         return response.json().then(errorData => {
-          throw new Error(errorData.message || 'Download failed');
+          throw new Error(errorData.message || 'Request failed');
         });
       }
       return response.json();
     })
     .then(data => {
-      console.log('Download response:', data);
-      statusElement.textContent = data.message || 'Download Complete!';
-      statusElement.style.color = 'green';
+      console.log('Detailed response:', data);
+      
+      if (data.success) {
+        statusElement.textContent = `Retrieved ${data.fileCount} files`;
+        statusElement.style.color = 'green';
+        
+        // Optional: Display file list
+        console.log('Files:', data.files);
+      } else {
+        throw new Error(data.message || 'Unknown error occurred');
+      }
     })
     .catch(err => {
-      console.error('Full error:', err);
+      console.error('Complete error details:', err);
       statusElement.textContent = 'Error: ' + err.message;
       statusElement.style.color = 'red';
     });
