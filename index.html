@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Folder Downloader</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>GitHub Folder Downloader</h1>
+        <form id="downloadForm">
+            <label for="repoUrl">GitHub Repository URL:</label>
+            <input type="text" id="repoUrl" name="repoUrl" required>
+
+            <label for="folderName">Folder Path:</label>
+            <input type="text" id="folderName" name="folderName" required>
+
+            <button type="submit">Download Folder</button>
+        </form>
+        <div id="status"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
