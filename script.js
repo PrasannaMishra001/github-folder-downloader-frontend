@@ -6,7 +6,8 @@ document.getElementById('downloadForm').addEventListener('submit', function(e) {
 
     document.getElementById('status').textContent = 'Downloading...';
 
-    fetch('/download', {
+    // Use the full URL to the backend deployed on Vercel
+    fetch('https://github-folder-downloader-backend-3r76xvcm1-prasannamishra.vercel.app', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
